@@ -23,13 +23,14 @@ public class Task {
         System.out.print("Числа в каждой строке: ");
         boolean foundAny = false;
 
-        for (int num = 1; num <= 9; num++) {
+        for (int k = 0; k < matrix[0].length; k++) {
+            int current = matrix[0][k];
             boolean inAllRows = true;
 
             for (int i = 0; i < matrix.length; i++) {
                 boolean foundInRow = false;
                 for (int j = 0; j < matrix[i].length; j++) {
-                    if (matrix[i][j] == num) {
+                    if (matrix[i][j] == current) {
                         foundInRow = true;
                         break;
                     }
@@ -44,9 +45,10 @@ public class Task {
                 if (foundAny) {
                     System.out.print(", ");
                 }
-                System.out.print(num);
+                System.out.print(current);
                 foundAny = true;
             }
         }
     }
+
 }
