@@ -6,7 +6,7 @@ public class Vectors {
         Task2[] vectors = new Task2[4];
 
         vectors[0] = new Task2(0, 0, -2, -2);      // угол 45
-        vectors[2] = new Task2(1, 1, 4, 2);      // не 45
+        vectors[2] = new Task2(1, 1, 4, 2);      // угол 45
 
         vectors[1] = new Task2();
         vectors[1].setX1(0);
@@ -15,7 +15,7 @@ public class Vectors {
         vectors[1].setY2(1);                    // угол 45
 
         vectors[3] = new Task2();
-        vectors[3].setX1(2);
+        vectors[3].setX1(1);
         vectors[3].setY1(2);
         vectors[3].setX2(5);
         vectors[3].setY2(6);                    // не 45
@@ -38,6 +38,6 @@ public class Vectors {
         System.out.println("Равенство векторов:");
         System.out.println("1 и 2: " + vectors[0].equals(vectors[1]));
         System.out.println("1 и 3: " + vectors[0].equals(vectors[2]));
-        System.out.println("2 и 3: " + vectors[1].equals(vectors[2]));
+        //System.out.println("2 и 3: " + vectors[1].equals(vectors[2]));
     }
 }
