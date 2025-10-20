@@ -5,7 +5,6 @@ public class Task2 {
     private double x1, y1, x2, y2;
 
     public Task2() {
-        // this(0,0,0,0);
     }
 
     public Task2(double x1, double y1, double x2, double y2) {
