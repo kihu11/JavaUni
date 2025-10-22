@@ -2,103 +2,68 @@ package Lab6;
 
 import java.util.Scanner;
 
-public class Dog extends Animal {
+public class Dog {
+    private final Animal animal;
+    private String breed;
+    private TrainingLevel trainingLevel;
 
-    protected String breed;
-    protected TrainingLevel trainingLevel;
-    protected double tailLength;
-
-    public Dog(){
-        super();
-    }
-
-    public Dog(String name, int age, double weight, String breed, TrainingLevel trainingLevel, double tailLength) {
-        super(name, age, weight);
+    public Dog(Animal animal, String breed, TrainingLevel trainingLevel) {
+        this.animal = animal;
         this.breed = breed;
         this.trainingLevel = trainingLevel;
-        this.tailLength = tailLength;
+    }
+
+    public Dog() {
+        this.animal = new Animal();
     }
 
     public static Dog set(Scanner scanner) {
-        Dog object = new Dog("", 0, 0, "", TrainingLevel.UNTRAINED, 0);
-        System.out.println("Опишите собаку.");
-        System.out.println();
+        Dog dog = new Dog();
 
-        System.out.print("Введите имя собаки: ");
-        object.setName(scanner.next());
+        System.out.println("Введите имя собаки:");
+        dog.animal.setName(scanner.next());
 
-        System.out.print("Введите возраст собаки: ");
-        object.setAge(scanner.nextInt());
+        System.out.println("Введите возраст собаки:");
+        dog.animal.setAge(scanner.nextInt());
 
-        System.out.print("Введите вес собаки: ");
-        object.setWeight(scanner.nextDouble());
+        System.out.println("Введите вес собаки:");
+        dog.animal.setWeight(scanner.nextDouble());
 
-        System.out.println("Введите натренированность собаки(UNTRAINED, BASIC, ADVANCED): ");
-        object.setTrainingLevel(TrainingLevel.valueOf(scanner.next()));
+        System.out.println("Введите породу собаки:");
+        dog.breed = scanner.next();
 
-        System.out.println("Введите длину хвоста собаки: ");
-        object.setTailLength(scanner.nextDouble());
+        System.out.println("Введите уровень дрессировки (UNTRAINED, BASIC, ADVANCED):");
+        dog.trainingLevel = TrainingLevel.valueOf(scanner.next());
 
-        return object;
+        return dog;
     }
 
-    public String getBreed() {
-        return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
-    public TrainingLevel getTrainingLevel() {
-        return trainingLevel;
-    }
-
-    public void setTrainingLevel(TrainingLevel trainingLevel) {
-        this.trainingLevel = trainingLevel;
-    }
-
-    public double getTailLength() {
-        return tailLength;
-    }
-
-    public void setTailLength(double tailLength) {
-        if (tailLength <= 0) {
-            System.out.println("Значение не может быть отрицательным. Переменной присвоено значение 1. Программа продолжается.");
-            this.tailLength = 1;
-        } else {
-            this.tailLength = tailLength;
-        }
-    }
-
-    public void printTrainingLevel(){
-        System.out.println(name + " уровень дрессировки: " + trainingLevel);
-    }
-
-    @Override
-    public void bite() {
-        System.out.println("Собака укусила");
-    }
-
-    @Override
     public void makeSound() {
-        System.out.println("Гав");
+        System.out.println("Собака гавкает");
     }
 
-    @Override
     public void run() {
-        System.out.println("Собака бежит");
+        animal.run();
+    }
+
+    public void bite() {
+        animal.bite();
+    }
+
+    public void jump() {
+        System.out.println("Собака прыгает");
+    }
+
+    public Animal getAnimal() {
+        return animal;
     }
 
     @Override
     public String toString() {
         return "Dog{" +
-                "breed='" + getBreed() + '\'' +
-                ", trainingLevel=" + getTrainingLevel() +
-                ", tailLength=" + getTailLength() +
-                ", name='" + getName() + '\'' +
-                ", age=" + getAge() +
-                ", weight=" + getWeight() +
+                "animal=" + animal +
+                ", breed='" + breed + '\'' +
+                ", trainingLevel=" + trainingLevel +
                 '}';
     }
 }

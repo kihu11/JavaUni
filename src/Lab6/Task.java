@@ -1,12 +1,9 @@
 package Lab6;
 
 import java.util.Scanner;
-import java.util.SortedMap;
 
 public class Task {
-
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
 
         Dog dog = Dog.set(scanner);
@@ -18,31 +15,24 @@ public class Task {
                             "1. подать голос\n" +
                             "2. пробежаться\n" +
                             "3. укусить\n" +
-                            "4. вывести информацию\n"
+                            "4. прыгнуть\n" +
+                            "5. вывести информацию\n"
             );
             int choice = scanner.nextInt();
             if (choice == 0)
                 break;
 
             switch (choice) {
-                case 1:
-                    dog.makeSound();
-                    break;
-                case 2:
-                    dog.run();
-                    break;
-                case 3:
-                    dog.bite();
-                    break;
-                case 4:
-                    System.out.println(dog);
-                    break;
-                default:
-                    System.out.println("выбран неправильный пункт меню, повторите ввод.");
+                case 1 -> dog.makeSound();
+                case 2 -> dog.run();
+                case 3 -> dog.bite();
+                case 4 -> dog.jump();
+                case 5 -> System.out.println(dog);
+                default -> System.out.println("Неверный пункт меню, повторите ввод.");
             }
         }
 
-        Puppy pup = Puppy.set(scanner);
+        Puppy puppy = Puppy.set(scanner);
 
         while (true) {
             System.out.println(
@@ -51,34 +41,24 @@ public class Task {
                             "1. подать голос\n" +
                             "2. пробежаться\n" +
                             "3. укусить\n" +
-                            "4. вывести информацию\n" +
-                            "5. поиграть\n"
+                            "4. прыгнуть\n" +
+                            "5. поиграть\n" +
+                            "6. вывести информацию\n"
             );
             int choice = scanner.nextInt();
             if (choice == 0)
                 break;
 
             switch (choice) {
-                case 1:
-                    pup.makeSound();
-                    break;
-                case 2:
-                    pup.run();
-                    break;
-                case 3:
-                    pup.bite();
-                    break;
-                case 4:
-                    System.out.println(pup);
-                    break;
-                case 5:
-                    pup.play();
-                    break;
-                default:
-                    System.out.println("выбран неправильный пункт меню, повторите ввод.");
+                case 1 -> puppy.makeSound();
+                case 2 -> puppy.run();
+                case 3 -> puppy.bite();
+                case 4 -> puppy.jump();
+                case 5 -> puppy.play();
+                case 6 -> System.out.println(puppy);
+                default -> System.out.println("Неверный пункт меню, повторите ввод.");
             }
         }
         scanner.close();
     }
 }
-

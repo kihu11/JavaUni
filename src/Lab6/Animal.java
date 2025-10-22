@@ -1,20 +1,9 @@
 package Lab6;
 
-abstract class Animal {
-
-    protected String name;
-    protected int age;
-    protected double weight;
-
-    public abstract void makeSound();
-
-    public abstract void run();
-
-    public abstract void bite();
-
-    public Animal() {
-
-    }
+public class Animal {
+    private String name;
+    private int age;
+    private double weight;
 
     public Animal(String name, int age, double weight) {
         this.name = name;
@@ -22,37 +11,51 @@ abstract class Animal {
         this.weight = weight;
     }
 
-    protected String getName() {
+    public Animal() {
+    }
+
+    public void makeSound() {
+        System.out.println(name + " издает звук");
+    }
+
+    public void run() {
+        System.out.println(name + " бежит");
+    }
+
+    public void bite() {
+        System.out.println(name + " кусает");
+    }
+
+    public String getName() {
         return name;
     }
 
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    protected int getAge() {
+    public int getAge() {
         return age;
     }
 
-    protected void setAge(int age) {
-        if (age <= 0) {
-            System.out.println("Значение не может быть отрицательным. Переменной присвоено значение 1. Программа продолжается.");
-            this.age = 1;
-        } else {
-            this.age = age;
-        }
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    protected double getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    protected void setWeight(double weight) {
-        if (weight <= 0) {
-            System.out.println("Значение не может быть отрицательным. Переменной присвоено значение 1. Программа продолжается.");
-            this.weight = 1;
-        } else {
-            this.weight = weight;
-        }
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", weight=" + weight +
+                '}';
     }
 }
