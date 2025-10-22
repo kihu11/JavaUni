@@ -3,9 +3,11 @@ package Lab6;
 import java.util.Scanner;
 
 public class Dog {
+
     private final Animal animal;
     private String breed;
     private TrainingLevel trainingLevel;
+
 
     public Dog(Animal animal, String breed, TrainingLevel trainingLevel) {
         this.animal = animal;
@@ -13,21 +15,13 @@ public class Dog {
         this.trainingLevel = trainingLevel;
     }
 
-    public Dog() {
-        this.animal = new Animal();
-    }
+//    public Dog() {
+//        this.animal = new Animal();
+//    }
 
-    public static Dog set(Scanner scanner) {
-        Dog dog = new Dog();
+    public static Dog set(Scanner scanner, Animal animal) {
 
-        System.out.println("Введите имя собаки:");
-        dog.animal.setName(scanner.next());
-
-        System.out.println("Введите возраст собаки:");
-        dog.animal.setAge(scanner.nextInt());
-
-        System.out.println("Введите вес собаки:");
-        dog.animal.setWeight(scanner.nextDouble());
+        Dog dog = new Dog(animal, " ", TrainingLevel.UNTRAINED);
 
         System.out.println("Введите породу собаки:");
         dog.breed = scanner.next();
@@ -38,9 +32,20 @@ public class Dog {
         return dog;
     }
 
-    public void makeSound() {
-        System.out.println("Собака гавкает");
+    public void edit(Scanner scanner) {
+
+        animal.edit(scanner);
+
+        System.out.println("Введите новую породу:");
+        this.setBreed(scanner.next());
+
+        System.out.println("Введите новый уровень дрессировки (UNTRAINED, BASIC, ADVANCED):");
+        this.setTrainingLevel(TrainingLevel.valueOf(scanner.next()));
     }
+
+//    public void makeSound() {
+//        animal.makeSound();
+//    }
 
     public void run() {
         animal.run();
@@ -51,11 +56,27 @@ public class Dog {
     }
 
     public void jump() {
-        System.out.println("Собака прыгает");
+        System.out.println(animal.getName() + " прыгает");
     }
 
     public Animal getAnimal() {
         return animal;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public TrainingLevel getTrainingLevel() {
+        return trainingLevel;
+    }
+
+    public void setTrainingLevel(TrainingLevel trainingLevel) {
+        this.trainingLevel = trainingLevel;
     }
 
     @Override

@@ -3,6 +3,7 @@ package Lab6;
 import java.util.Scanner;
 
 public class Puppy {
+
     private final Dog dog;
     private EnergyLevel energyLevel;
 
@@ -11,22 +12,31 @@ public class Puppy {
         this.energyLevel = energyLevel;
     }
 
-    public Puppy() {
-        this.dog = new Dog();
+//    public Puppy() {
+//        this.dog = new Dog();
+//    }
+
+    public void edit(Scanner scanner) {
+
+        dog.edit(scanner);
+
+        System.out.println("Введите новый уровень энергии (CALM, ENERGIZED)");
+        this.setEnergyLevel(EnergyLevel.valueOf(scanner.next()));
     }
 
-    public static Puppy set(Scanner scanner) {
+    public static Puppy set(Scanner scanner, Dog dog) {
+
         System.out.println("Опишите щенка: ");
-        Dog dog = Dog.set(scanner);
+        Puppy puppy = new Puppy(dog, EnergyLevel.CALM);
 
         System.out.println("Введите уровень энергичности (CALM, ENERGETIC):");
         EnergyLevel level = EnergyLevel.valueOf(scanner.next());
 
-        return new Puppy(dog, level);
+        return puppy;
     }
 
     public void makeSound() {
-        System.out.println("Щенок тявкает");
+        System.out.println(dog.getAnimal().getName() + " тявкает");
     }
 
     public void run() {
@@ -41,8 +51,12 @@ public class Puppy {
         dog.jump();
     }
 
-    public void play() {
-        System.out.println("Щенок играет");
+    public EnergyLevel getEnergyLevel() {
+        return energyLevel;
+    }
+
+    public void setEnergyLevel(EnergyLevel energyLevel) {
+        this.energyLevel = energyLevel;
     }
 
     @Override

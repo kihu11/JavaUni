@@ -1,6 +1,9 @@
 package Lab6;
 
+import java.util.Scanner;
+
 public class Animal {
+
     private String name;
     private int age;
     private double weight;
@@ -9,6 +12,36 @@ public class Animal {
         this.name = name;
         this.age = age;
         this.weight = weight;
+    }
+
+    public static Animal set(Scanner scanner) {
+
+        Animal animal = new Animal(" ", 0, 0);
+
+        System.out.println("Введите имя животного:");
+        animal.setName(scanner.next());
+
+        System.out.println("Введите возраст животного:");
+        animal.setAge(scanner.nextInt());
+
+        System.out.println("Введите вес животного:");
+        animal.setWeight(scanner.nextDouble());
+
+        return animal;
+    }
+
+    public void edit(Scanner scanner) {
+        System.out.println("Редактируем данные");
+
+        System.out.println("Введите новое имя:");
+        this.setName(scanner.next());
+
+        System.out.println("Введите новый возраст:");
+        this.setAge(scanner.nextInt());
+
+        System.out.println("Введите новый вес :");
+        this.setWeight(scanner.nextDouble());
+
     }
 
     public Animal() {
