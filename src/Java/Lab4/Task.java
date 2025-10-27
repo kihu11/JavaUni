@@ -1,4 +1,4 @@
-package Lab4;
+package Java.Lab4;
 
 public class Task {
 
