@@ -1,4 +1,4 @@
-package Java.Lab7.Enums;
+package Java.Lab7.enums;
 
 public enum PlayStyle {
 
