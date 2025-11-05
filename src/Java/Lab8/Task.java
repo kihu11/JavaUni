@@ -18,8 +18,6 @@ public class Task {
             return;
         }
 
-
-//
         Pattern pattern = Pattern.compile("\\b[a-zA-Z]{2,10}\\b");
         Matcher matcher = pattern.matcher(text);
 
@@ -41,28 +39,20 @@ public class Task {
         String lastWord = words.get(words.size() - 1);
         System.out.println("Последнее слово это: " + lastWord);
 
-        ArrayList<String> transformedWords = new ArrayList<String>();
+        matcher.reset();
         int transformedCounter = 0;
 
-        for (int i = 0; i < words.size() - 1; i++) {
-            String word = words.get(i);
-
+        while (matcher.find()) {
+            String word = matcher.group();
             if (!word.equals(lastWord)) {
                 String transformedWord = transformWord(word);
-                transformedWords.add(transformedWord);
                 transformedCounter++;
+                System.out.printf(" %2d. %s%n", transformedCounter, transformedWord);
             }
         }
-
-        System.out.println("\nПреобразованные слова: ");
-        for (int i = 0; i < transformedWords.size(); i++) {
-            System.out.printf("%2d. %s%n", i + 1, transformedWords.get(i));
-        }
-        System.out.println("Преобразованных слов: " + transformedCounter);
     }
 
     private static String transformWord(String word) {
-
         if (word.length() < 2) {
             return word;
         }
@@ -95,19 +85,20 @@ public class Task {
 
         System.out.println("Процесс замены " + k + "-й буквы в словах:");
         while (matcher.find()) {
-            String segment = matcher.group();
+            String word = matcher.group(1);      //[a-zA-Z]{2,10}
+            String nonWord = matcher.group(2);   //[^a-zA-Z]+
 
-            if (segment.matches("[a-zA-Z]{2,10}")) {
-                String modifiedWord = replaceKth(segment, k, replacement);
+            if (word != null) {
+                String modifiedWord = replaceKth(word, k, replacement);
 
-                if (!segment.equals(modifiedWord)) {
+                if (!word.equals(modifiedWord)) {
                     changedCount++;
-                    System.out.printf("'%s' -> '%s' %n", segment, modifiedWord);
+                    System.out.printf("'%s' -> '%s'%n", word, modifiedWord);
                 }
 
                 resultText.append(modifiedWord);
             } else {
-                resultText.append(segment);
+                resultText.append(nonWord);
             }
         }
 
@@ -117,11 +108,11 @@ public class Task {
 
     public static void main(String[] args) {
         String text = """
-        Life-strategy struggle, fight strength courage 
-        wisdom freedom victory honor glory power привет
-        spirit destiny.. journey challenge... success achievement 
-        progress.. innovation technology science discovery research 
-        development solution strategy.""";
+                Life-strategy struggle, fight strength courage 
+                wisdom freedom victory honor glory power привет
+                spirit destiny.. journey challenge... success achievement 
+                progress.. innovation technology science discovery research 
+                development solution strategy.""";
         //последнее слово strategy
 
         textCheck(text);
