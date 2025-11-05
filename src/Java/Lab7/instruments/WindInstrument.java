@@ -4,39 +4,42 @@ import Java.Lab7.enums.AirDirection;
 
 import java.util.Scanner;
 
-public class WindInstrument extends Instrument{
+public class WindInstrument extends Instrument {
 
     private String bodyMaterial;
     private AirDirection airDirection; //(Прямое, поперечное)
 
-    public WindInstrument(String brand, String name, AirDirection airDirection, String bodyMaterial) {
-        super(brand, name);
-        this.airDirection = airDirection;
-        this.bodyMaterial = bodyMaterial;
+    public WindInstrument() {
+        super();
+//        this.airDirection = airDirection;
+//        this.bodyMaterial = bodyMaterial;
     }
 
-    public void edit(Scanner scanner) {
-        System.out.println("Отредактируем духовой инструмент");
 
-        System.out.println("Введите новуе материал инструмента");
+    public void set(Scanner scanner) {
+        super.set(scanner);
+        System.out.println("Опишите духовой инструмент: ");
+
+//        System.out.println("Введите название бренда");
+//        this.setBrand(scanner.next());
+//
+//        System.out.println("Введите название инструмента");
+//        this.setName(scanner.next());
+
+        System.out.println("Введите материал инструмента");
         this.bodyMaterial = scanner.next();
 
         System.out.println("Введите направление воздуха");
-        this.setAirDirection(AirDirection.valueOf(scanner.next()));
+        this.airDirection = AirDirection.valueOf(scanner.next());
+
+//        return inst;
     }
 
-    public static WindInstrument set(Scanner scanner) {
-        System.out.println("Опишите духовой инструмент: ");
-        WindInstrument inst = new WindInstrument(" ", " ", AirDirection.DIRECT, " ");
-
-        System.out.println("Введите материал инструмента");
-        inst.bodyMaterial = scanner.next();
-
-        System.out.println("Введите направление воздуха");
-        inst.airDirection = AirDirection.valueOf(scanner.next());
-
-        return inst;
+    public void changeAirDirection(AirDirection newDirection) {
+        System.out.println(getName() + " меняет направление воздуха с " + airDirection + " на " + newDirection);
+        this.airDirection = newDirection;
     }
+
 
     @Override
     public void play() {

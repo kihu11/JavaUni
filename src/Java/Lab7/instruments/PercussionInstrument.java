@@ -8,44 +8,47 @@ public class PercussionInstrument extends Instrument {
     private boolean isTuned;
     private String material;
 
-    public PercussionInstrument(String brand, String name, boolean isTuned, String material) {
-        super(brand, name);
-        this.isTuned = isTuned;
-        this.material = material;
+    public PercussionInstrument() {
+        super();
+//        this.isTuned = isTuned;
+//        this.material = material;
     }
 
-    @Override
-    public void edit(Scanner scanner) {
-        System.out.println("Отредактируем ударный инструмент");
+ //   @Override
+//    public void edit(Scanner scanner) {
+//        System.out.println("Отредактируем ударный инструмент");
+//
+//        System.out.println("Введите новую настрой инструмента");
+//        this.isTuned = parseYesNo(scanner.next());
+//
+//        System.out.println("Введите материал ударного инструмента");
+//        this.material = scanner.next();
+//    }
 
-        System.out.println("Введите новую настрой инструмента");
+    @Override
+    public void set(Scanner scanner) {
+        super.set(scanner);
+        System.out.println("Опишите ударного инструмента ");
+
+        System.out.println("Введите настроен ли инструмент (y/n)");
         this.isTuned = parseYesNo(scanner.next());
 
         System.out.println("Введите материал ударного инструмента");
         this.material = scanner.next();
     }
 
-    public static PercussionInstrument set(Scanner scanner) {
-        System.out.println("Опишите ударный инструмент: ");
-        PercussionInstrument inst = new PercussionInstrument(" ", " ", false, " ");
-
-        System.out.println("Введите название бренда");
-        inst.setBrand(scanner.next());
-
-        System.out.println("Введите название инструмента");
-        inst.setName(scanner.next());
-
-        System.out.println("Введите настроен ли инструмент Да[y], Нет[n](Значение по умолчанию)");
-        inst.setTuned(parseYesNo(scanner.next()));
-
-        System.out.println("Введите материал инструмента");
-        inst.material = scanner.next();
-
-        return inst;
+    public void tune() {
+        if (!isTuned) {
+            System.out.println(getName() + " уже настроен");
+            isTuned = true;
+        } else {
+            System.out.println(getName() + " настроили");
+        }
     }
 
+
     private static boolean parseYesNo(String input) {
-        return input.equals("y");
+        return input.equals("Y");
     }
 
     @Override
@@ -84,5 +87,4 @@ public class PercussionInstrument extends Instrument {
         PercussionInstrument that = (PercussionInstrument) o;
         return isTuned == that.isTuned && Objects.equals(material, that.material);
     }
-
 }

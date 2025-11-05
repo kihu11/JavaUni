@@ -8,14 +8,24 @@ public abstract class Instrument {
     private String brand;
     private String name;
 
-    public Instrument(String brand, String name) {
-        this.brand = brand;
-        this.name = name;
-    }
+    //  private static int count = 0;
+
+    public Instrument() {    }
+
+//    public static int getCount() {
+//        return count;
+//    }
 
     public abstract void play();
 
-    public abstract void edit(Scanner scanner);
+    public void set(Scanner scanner){
+        System.out.println("Введите название бренда")   ;
+        this.setBrand(scanner.next());
+
+        System.out.println("Введите название инструмента");
+        this.setName(scanner.next());
+    }
+
 
     public String getBrand() {
         return brand;
