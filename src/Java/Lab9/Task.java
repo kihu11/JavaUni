@@ -36,7 +36,8 @@ public class Task {
                             "2. Добавить звонок\n" +
                             "3. Изменить звонок\n" +
                             "4. Удалить звонок\n" +
-                            "5. Словарь"
+                            "5. Показать итоги\n" +
+                            "6. Словарь"
             );
 
             int choice = scanner.nextInt();
@@ -45,19 +46,21 @@ public class Task {
                 break;
 
             switch (choice) {
-                case 1 -> Call.showCalls(calls);
-                case 2 -> Call.addCall(calls, scanner);
+                case 1 -> CallService.showCalls(calls);
+                case 2 -> CallService.addCall(calls, scanner);
                 case 3 -> {
                     System.out.print("Введите индекс звонка (0-" + (calls.size() - 1) + "): ");
                     int index = scanner.nextInt();
+                    scanner.nextLine();
                     if (index >= 0 && index < calls.size()) {
-                        calls.get(index).set(scanner);
+                        CallService.set(calls.get(index), scanner);
                     } else {
                         System.out.println("Неверный индекс");
                     }
                 }
-                case 4 -> Call.deleteCall(calls, scanner);
-                case 5 -> Call.showSummary(calls);
+                case 4 -> CallService.deleteCall(calls, scanner);
+                case 5 -> CallService.showSummary(calls);
+                case 6 -> Dictionary.showDictionary();
             }//
         }
     }

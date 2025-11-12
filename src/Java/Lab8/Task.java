@@ -64,9 +64,7 @@ public class Task {
         return new String(chars);
     }
 
-    public static void replacmentKth(String text, int k, char replacement) {
-    //appendReplacemnt
-        //
+    public static void replacmentkth(String text, int k, char replacement) {
         Pattern pattern = Pattern.compile("([A-Za-zА-Яа-яЁё]+)|([^A-Za-zА-Яа-яЁё]+)");
         Matcher matcher = pattern.matcher(text);
 
@@ -90,9 +88,10 @@ public class Task {
 
         matcher.appendTail(resultText);
 
-        System.out.println("\nИзмененный текст: " + resultText);
-        System.out.println("Слов с заменой: " + changedCount);
+        System.out.println("\nИзмененный текст:\n" + resultText);
+        System.out.println("\nСлов с заменой: " + changedCount);
     }
+
 
     public static void main(String[] args) {
         String text = """
@@ -110,6 +109,6 @@ public class Task {
                 development solution strategy.""";
 
         textCheck(text);
-        replacmentKth(text2, 4, '$');
+        replacmentkth(text2, 4, '$');
     }
 }
