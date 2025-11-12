@@ -2,31 +2,28 @@ package Java.Lab8;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
 
 public class Task {
 
     public static void textCheck(String text) {
 
-        ArrayList<String> words = new ArrayList<>();
-        int counter = 0;
-
-        System.out.println("Исходный текст: " + text);
+        System.out.println("\nИсходный текст: " + text);
 
         if (!text.trim().endsWith(".")) {
             System.out.println("Предложение должно заканчиваться точкой");
             return;
         }
 
-        Pattern pattern = Pattern.compile("\\b[a-zA-Z]{2,10}\\b");
+        Pattern pattern = Pattern.compile("[A-Za-zА-Яа-яЁё]{2,10}");
         Matcher matcher = pattern.matcher(text);
 
-        System.out.println("\nНайденные слова:");
+        int counter = 0;
+        String lastWord = null;
+
         while (matcher.find()) {
             String word = matcher.group();
-            words.add(word);
             counter++;
-            System.out.printf("Слово %2d: '%s'%n", counter, word);
+            lastWord = word;
         }
 
         System.out.println("\nВсего слов: " + counter);
@@ -36,7 +33,6 @@ public class Task {
             return;
         }
 
-        String lastWord = words.get(words.size() - 1);
         System.out.println("Последнее слово это: " + lastWord);
 
         matcher.reset();
@@ -56,66 +52,63 @@ public class Task {
         if (word.length() < 2) {
             return word;
         }
-
-        String first = word.substring(0, 1);
-        String rest = word.substring(1);
-
-        return rest + first;
+        return word.substring(1) + word.charAt(0);
     }
 
     public static String replaceKth(String word, int k, char replacement) {
         if (k > word.length() || k < 1) {
             return word;
         }
-
-        int index = k - 1;
         char[] chars = word.toCharArray();
-        chars[index] = replacement;
-
+        chars[k - 1] = replacement;
         return new String(chars);
     }
 
     public static void replacmentKth(String text, int k, char replacement) {
-        StringBuilder resultText = new StringBuilder();
-
-        Pattern pattern = Pattern.compile("([a-zA-Z]{2,10})|([^a-zA-Z]+)");
+    //appendReplacemnt
+        Pattern pattern = Pattern.compile("([A-Za-zА-Яа-яЁё]+)|([^A-Za-zА-Яа-яЁё]+)");
         Matcher matcher = pattern.matcher(text);
 
+        StringBuilder resultText = new StringBuilder();
         int changedCount = 0;
 
-        System.out.println("Процесс замены " + k + "-й буквы в словах:");
-        while (matcher.find()) {
-            String word = matcher.group(1);      //[a-zA-Z]{2,10}
-            String nonWord = matcher.group(2);   //[^a-zA-Z]+
+        System.out.println("\nРезультат замены " + k + "-й буквы в словах:");
 
+        while (matcher.find()) {
+            String word = matcher.group(1);
             if (word != null) {
                 String modifiedWord = replaceKth(word, k, replacement);
-
                 if (!word.equals(modifiedWord)) {
                     changedCount++;
-                    System.out.printf("'%s' -> '%s'%n", word, modifiedWord);
                 }
-
-                resultText.append(modifiedWord);
+                matcher.appendReplacement(resultText, Matcher.quoteReplacement(modifiedWord));
             } else {
-                resultText.append(nonWord);
+                matcher.appendReplacement(resultText, Matcher.quoteReplacement(matcher.group()));
             }
         }
 
-        System.out.println("Измененный текст: " + resultText);
+        matcher.appendTail(resultText);
+
+        System.out.println("\nИзмененный текст: " + resultText);
         System.out.println("Слов с заменой: " + changedCount);
     }
 
     public static void main(String[] args) {
         String text = """
-                Life-strategy struggle, fight strength courage 
-                wisdom freedom victory honor glory power привет
+                Life-strategy struggle, fight strength courage
+                wisdom freedom victory honor glory power 
                 spirit destiny.. journey challenge... success achievement 
                 progress.. innovation technology science discovery research 
                 development solution strategy.""";
-        //последнее слово strategy
+
+        String text2 = """
+                Life-здаров struggle, fight strength courage привет привет
+                wisdom как victory удача glory power 
+                spirit destiny.. journey challenge... success achievement 
+                progress.. innovation как science discovery research 
+                development solution strategy.""";
 
         textCheck(text);
-        replacmentKth(text, 3, '.');
+        replacmentKth(text2, 4, '$');
     }
 }

@@ -1,6 +1,6 @@
 package Java.Lab7.Classes;
 
-import Java.Lab7.Enums.PlayStyle;
+import Java.Lab7.enums.PlayStyle;
 
 public class StringInstrument extends Instrument {
 

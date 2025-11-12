@@ -1,6 +1,6 @@
 package Java.Lab7.Classes;
 
-import Java.Lab7.Enums.AirDirection;
+import Java.Lab7.enums.AirDirection;
 
 public class WindInstrument extends Instrument{
 
