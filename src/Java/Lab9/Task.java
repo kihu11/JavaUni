@@ -58,7 +58,7 @@ public class Task {
                 }
                 case 4 -> Call.deleteCall(calls, scanner);
                 case 5 -> Call.showSummary(calls);
-            }
+            }//
         }
     }
 }

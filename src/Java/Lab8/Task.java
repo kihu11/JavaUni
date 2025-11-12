@@ -66,6 +66,7 @@ public class Task {
 
     public static void replacmentKth(String text, int k, char replacement) {
     //appendReplacemnt
+        //
         Pattern pattern = Pattern.compile("([A-Za-zА-Яа-яЁё]+)|([^A-Za-zА-Яа-яЁё]+)");
         Matcher matcher = pattern.matcher(text);
 
