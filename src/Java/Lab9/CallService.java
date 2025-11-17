@@ -35,7 +35,7 @@ public class CallService {
         Call newCall = new Call("", "", "", 0, 0, "", "");
         set(newCall, sc);
         calls.add(newCall);
-        Dictionary.addCityIfAbsent(newCall.getCityCode(), newCall.getCityName());
+//        Dictionary.addCityIfAbsent(newCall.getCityCode(), newCall.getCityName());
         System.out.println("Звонок добавлен\n");
     }
 

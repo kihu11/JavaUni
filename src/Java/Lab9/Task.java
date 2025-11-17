@@ -36,8 +36,7 @@ public class Task {
                             "2. Добавить звонок\n" +
                             "3. Изменить звонок\n" +
                             "4. Удалить звонок\n" +
-                            "5. Показать итоги\n" +
-                            "6. Словарь"
+                            "5. Словарь\n"
             );
 
             int choice = scanner.nextInt();
@@ -59,9 +58,9 @@ public class Task {
                     }
                 }
                 case 4 -> CallService.deleteCall(calls, scanner);
-                case 5 -> CallService.showSummary(calls);
-                case 6 -> Dictionary.showDictionary();
-            }//
+                case 5 -> Dictionary.showCitiesAndKeys();
+
+            }
         }
     }
 }

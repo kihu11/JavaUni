@@ -65,6 +65,7 @@ public class Task {
     }
 
     public static void replacmentkth(String text, int k, char replacement) {
+       //убрать деление по 2 группам
         Pattern pattern = Pattern.compile("([A-Za-zА-Яа-яЁё]+)|([^A-Za-zА-Яа-яЁё]+)");
         Matcher matcher = pattern.matcher(text);
 

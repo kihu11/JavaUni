@@ -1,12 +1,14 @@
 package Java.Lab9;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class Dictionary {
-    private static final Map<String, String> cityCodes = new HashMap<>();
 
+    private static final Map<String, String> cityCodes = new TreeMap<>();
+//убрать static сделать через for
     static {
         cityCodes.put("044", "Киев");
         cityCodes.put("032", "Львов");
@@ -21,17 +23,33 @@ public class Dictionary {
         cityCodes.put("062", "Донецк");
     }
 
-    public static void showDictionary() {
-        System.out.println("\nСловарь кодов городов:");
-        var keys = new ArrayList<>(cityCodes.keySet());
-        for (int i = 0; i < keys.size(); i++) {
-            String code = keys.get(i);
-            String city = cityCodes.get(code);
-            System.out.printf("%d. %s — %s%n", i + 1, code, city);
-        }
-        System.out.println();
-    }
     public static void addCityIfAbsent(String code, String city) {
         cityCodes.putIfAbsent(code, city);
+    }
+
+    public static String getCityName(String code) {
+        return cityCodes.getOrDefault(code, "Неизвестный город");
+    }
+
+    public static Collection<String> getAllCitiesCollection() {
+        return Collections.unmodifiableCollection(cityCodes.values());
+    }
+
+    public static void showCitiesAndKeys() {
+        Collection<String> cities = getAllCitiesCollection();
+        int i = 1;
+        for (String city : cities) {
+            String code = getCodeByCity(city);
+            System.out.printf("%d. %s — %s%n", i++, code, city);
+        }
+    }
+
+    private static String getCodeByCity(String city) {
+        for (Map.Entry<String, String> entry : cityCodes.entrySet()) {
+            if (entry.getValue().equals(city)) {
+                return entry.getKey();
+            }
+        }
+        return "Неизвестно";
     }
 }

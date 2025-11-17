@@ -32,6 +32,7 @@ public class FordFulkerson {
 
         int fordFulkerson(int graph[][], int s, int t) {
             int u, v;
+            int count = 0;
             int rGraph[][] = new int[V][V];
             for (u = 0; u < V; u++)
                 for (v = 0; v < V; v++)
@@ -40,6 +41,8 @@ public class FordFulkerson {
             int maxFlow = 0;
             while (bfs(rGraph, s, t, parent)) {
                 int pathFlow = Integer.MAX_VALUE;
+                int flowNumber = 0;
+
                 for (v = t; v != s; v = parent[v]) {
                     u = parent[v];
                     pathFlow = Math.min(pathFlow, rGraph[u][v]);
@@ -50,7 +53,9 @@ public class FordFulkerson {
                     rGraph[v][u] += pathFlow;
                 }
                 maxFlow += pathFlow;
+                count++;
             }
+            System.out.println("Кол-во потоков: " + count);
             return maxFlow;
         }
     }
