@@ -65,8 +65,8 @@ public class Task {
     }
 
     public static void replacmentkth(String text, int k, char replacement) {
-       //убрать деление по 2 группам
-        Pattern pattern = Pattern.compile("([A-Za-zА-Яа-яЁё]+)|([^A-Za-zА-Яа-яЁё]+)");
+
+        Pattern pattern = Pattern.compile("[A-Za-zА-Яа-яЁё]+");
         Matcher matcher = pattern.matcher(text);
 
         StringBuilder resultText = new StringBuilder();
@@ -75,16 +75,14 @@ public class Task {
         System.out.println("\nРезультат замены " + k + "-й буквы в словах:");
 
         while (matcher.find()) {
-            String word = matcher.group(1);
-            if (word != null) {
-                String modifiedWord = replaceKth(word, k, replacement);
-                if (!word.equals(modifiedWord)) {
-                    changedCount++;
-                }
-                matcher.appendReplacement(resultText, Matcher.quoteReplacement(modifiedWord));
-            } else {
-                matcher.appendReplacement(resultText, Matcher.quoteReplacement(matcher.group()));
+            String word = matcher.group();
+            String modifiedWord = replaceKth(word, k, replacement);
+
+            if (!word.equals(modifiedWord)) {
+                changedCount++;
             }
+
+            matcher.appendReplacement(resultText, Matcher.quoteReplacement(modifiedWord));
         }
 
         matcher.appendTail(resultText);
@@ -92,6 +90,7 @@ public class Task {
         System.out.println("\nИзмененный текст:\n" + resultText);
         System.out.println("\nСлов с заменой: " + changedCount);
     }
+
 
 
     public static void main(String[] args) {

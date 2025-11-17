@@ -31,11 +31,13 @@ public class CallService {
         call.setSubscriberNumber(sc.nextLine());
     }
 
-    public static void addCall(List<Call> calls, Scanner sc) {
+    public static void addCall(List<Call> calls, Scanner sc, Dictionary dictionary) {
         Call newCall = new Call("", "", "", 0, 0, "", "");
         set(newCall, sc);
         calls.add(newCall);
-//        Dictionary.addCityIfAbsent(newCall.getCityCode(), newCall.getCityName());
+
+        dictionary.addCity(newCall.getCityCode(), newCall.getCityName());
+
         System.out.println("Звонок добавлен\n");
     }
 
@@ -57,34 +59,5 @@ public class CallService {
         } else {
             System.out.println("Неверный индекс!");
         }
-    }
-
-    public static void showSummary(List<Call> calls) {
-        calls.sort(Comparator.comparing(Call::getCityKey));
-
-        System.out.println("\nИтоги по городам:");
-        String currentCity = "";
-        double totalDuration = 0;
-        double totalCost = 0;
-
-        for (Call call : calls) {
-            if (!call.getCityKey().equals(currentCity)) {
-                if (!currentCity.isEmpty()) {
-                    System.out.printf("%-20s | Общее время: %2.1f мин | Сумма: %4.2f руб%n",
-                            currentCity, totalDuration, totalCost);
-                }
-                currentCity = call.getCityKey();
-                totalDuration = 0;
-                totalCost = 0;
-            }
-            totalDuration += call.getDuration();
-            totalCost += call.getCost();
-        }
-
-        if (!currentCity.isEmpty()) {
-            System.out.printf("%-20s | Общее время: %2.1f мин | Сумма: %4.2f руб%n",
-                    currentCity, totalDuration, totalCost);
-        }
-        System.out.println();
     }
 }

@@ -8,6 +8,7 @@ public class Task {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+
         ArrayList<Call> calls = new ArrayList<>(Arrays.asList(
                 new Call("2025-11-01", "044", "Киев", 12.5, 1.5, "111-111", "222-222"),
                 new Call("2025-11-02", "032", "Львов", 8.0, 2.0, "333-333", "444-444"),
@@ -28,9 +29,15 @@ public class Task {
                 new Call("2025-11-10", "048", "Одесса", 10.5, 1.7, "999-000", "111-222")
         ));
 
+        Dictionary dictionary = new Dictionary();
+
+        for (Call call : calls) {
+            dictionary.addCity(call.getCityCode(), call.getCityName());
+        }
+
         while (true) {
             System.out.println(
-                    "Выберете пункт меню:\n" +
+                    "Выберите пункт меню:\n" +
                             "0. выход\n" +
                             "1. Показать все звонки\n" +
                             "2. Добавить звонок\n" +
@@ -46,7 +53,7 @@ public class Task {
 
             switch (choice) {
                 case 1 -> CallService.showCalls(calls);
-                case 2 -> CallService.addCall(calls, scanner);
+                case 2 -> CallService.addCall(calls, scanner, dictionary);
                 case 3 -> {
                     System.out.print("Введите индекс звонка (0-" + (calls.size() - 1) + "): ");
                     int index = scanner.nextInt();
@@ -58,8 +65,7 @@ public class Task {
                     }
                 }
                 case 4 -> CallService.deleteCall(calls, scanner);
-                case 5 -> Dictionary.showCitiesAndKeys();
-
+                case 5 -> dictionary.showCities();
             }
         }
     }
