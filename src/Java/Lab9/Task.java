@@ -31,41 +31,41 @@ public class Task {
 
         Dictionary dictionary = new Dictionary();
 
-        for (Call call : calls) {
-            dictionary.addCity(call.getCityCode(), call.getCityName());
-        }
-
         while (true) {
             System.out.println(
                     "Выберите пункт меню:\n" +
-                            "0. выход\n" +
+                            "0. Показать словарь и выйти\n" +
                             "1. Показать все звонки\n" +
                             "2. Добавить звонок\n" +
                             "3. Изменить звонок\n" +
-                            "4. Удалить звонок\n" +
-                            "5. Словарь\n"
+                            "4. Удалить звонок\n"
             );
 
             int choice = scanner.nextInt();
             scanner.nextLine();
-            if (choice == 0)
+            if (choice == 0) {
+                for (Call call : calls) {
+                    dictionary.addCity(call.getCityCode(), call.getCityName());
+                }
+                dictionary.showCities(calls);
                 break;
-
+            }
             switch (choice) {
                 case 1 -> CallService.showCalls(calls);
                 case 2 -> CallService.addCall(calls, scanner, dictionary);
                 case 3 -> {
                     System.out.print("Введите индекс звонка (0-" + (calls.size() - 1) + "): ");
+                    CallService.showCalls(calls);
                     int index = scanner.nextInt();
                     scanner.nextLine();
+
                     if (index >= 0 && index < calls.size()) {
-                        CallService.set(calls.get(index), scanner);
+                        Call.set(calls.get(index), scanner);
                     } else {
                         System.out.println("Неверный индекс");
                     }
                 }
-                case 4 -> CallService.deleteCall(calls, scanner);
-                case 5 -> dictionary.showCities();
+                case 4 -> CallService.deleteCall(calls, scanner, dictionary);
             }
         }
     }

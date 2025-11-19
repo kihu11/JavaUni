@@ -1,5 +1,7 @@
 package Java.Lab9;
 
+import java.util.Scanner;
+
 public class Call {
     private String date;
     private String cityCode;
@@ -20,8 +22,37 @@ public class Call {
         this.subscriberNumber = subscriberNumber;
     }
 
+    public static void set(Call call, Scanner sc) {
+        System.out.println("\nОпишите звонок");
+
+        System.out.print("Дата (yyyy-mm-dd): ");
+        call.setDate(sc.nextLine());
+
+        System.out.print("Код города: ");
+        call.setCityCode(sc.nextLine());
+
+        System.out.print("Название города: ");
+        call.setCityName(sc.nextLine());
+
+        System.out.print("Время разговора (мин): ");
+        call.setDuration(Double.parseDouble(sc.nextLine()));
+
+        System.out.print("Тариф (руб/мин): ");
+        call.setRate(Double.parseDouble(sc.nextLine()));
+
+        System.out.print("Номер в городе: ");
+        call.setLocalNumber(sc.nextLine());
+
+        System.out.print("Номер абонента: ");
+        call.setSubscriberNumber(sc.nextLine());
+    }
+
     public String getCityKey() {
         return cityCode + " " + cityName;
+    }
+
+    public double getValue(){
+        return duration * rate;
     }
 
     public double getCost() {

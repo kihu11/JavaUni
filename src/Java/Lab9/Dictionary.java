@@ -10,14 +10,23 @@ public class Dictionary {
         cityCodes.putIfAbsent(code, city);
     }
 
-    public String getCityName(String code) {
-        return cityCodes.getOrDefault(code, "Неизвестный город");
-    }
+    public void showCities(List<Call> calls) {
+        Map<String, Double> cityTotals = new HashMap<>();
 
-    public void showCities() {
+        for (Call call : calls) {
+            cityTotals.put(call.getCityCode(),
+                    cityTotals.getOrDefault(call.getCityCode(), 0.0) + call.getValue());
+        }
+
         int i = 1;
         for (Map.Entry<String, String> entry : cityCodes.entrySet()) {
-            System.out.printf("%d. %s — %s%n", i++, entry.getKey(), entry.getValue());
+            String code = entry.getKey();
+            String city = entry.getValue();
+            double total = cityTotals.getOrDefault(code, 0.0);
+            System.out.printf("%d. %s — %s | Всего: %.2f руб.%n", i++, code, city, total);
         }
     }
 }
+
+//убрать лишний словарь
+//1
