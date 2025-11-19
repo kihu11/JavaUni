@@ -4,29 +4,37 @@ import java.util.*;
 
 public class Dictionary {
 
-    private final Map<String, String> cityCodes = new HashMap<>();
-
-    public void addCity(String code, String city) {
-        cityCodes.putIfAbsent(code, city);
-    }
-
     public void showCities(List<Call> calls) {
-        Map<String, Double> cityTotals = new HashMap<>();
+
+        // карта: код города → {название, сумма}
+        Map<String, CityInfo> cityMap = new LinkedHashMap<>();
 
         for (Call call : calls) {
-            cityTotals.put(call.getCityCode(),
-                    cityTotals.getOrDefault(call.getCityCode(), 0.0) + call.getValue());
+            String code = call.getCityCode();
+            String city = call.getCityName();
+            double value = call.getValue();
+
+            cityMap.putIfAbsent(code, new CityInfo(city, 0));
+            cityMap.get(code).total += value;
         }
 
         int i = 1;
-        for (Map.Entry<String, String> entry : cityCodes.entrySet()) {
+        for (Map.Entry<String, CityInfo> entry : cityMap.entrySet()) {
             String code = entry.getKey();
-            String city = entry.getValue();
-            double total = cityTotals.getOrDefault(code, 0.0);
-            System.out.printf("%d. %s — %s | Всего: %.2f руб.%n", i++, code, city, total);
+            CityInfo info = entry.getValue();
+            System.out.printf("%d. %s — %s | Всего: %.2f руб.%n",
+                    i++, code, info.name, info.total);
+        }
+    }
+
+    private static class CityInfo {
+        String name;
+        double total;
+
+        CityInfo(String name, double total) {
+            this.name = name;
+            this.total = total;
         }
     }
 }
-
-//убрать лишний словарь
 //1

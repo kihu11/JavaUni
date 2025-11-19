@@ -44,9 +44,6 @@ public class Task {
             int choice = scanner.nextInt();
             scanner.nextLine();
             if (choice == 0) {
-                for (Call call : calls) {
-                    dictionary.addCity(call.getCityCode(), call.getCityName());
-                }
                 dictionary.showCities(calls);
                 break;
             }
