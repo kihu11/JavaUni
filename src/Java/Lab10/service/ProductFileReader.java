@@ -13,7 +13,6 @@ public class ProductFileReader {
         this.file = new File(filename);
     }
 
-    // Поэлементное чтение — без загрузки всего файла в память
     public void readAll(Consumer<Product> handler) throws IOException {
         if (!file.exists() || file.length() == 0) return;
 

@@ -33,9 +33,10 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return String.format(
-                "Товар: %-15s | Цена: %.2f | Кол-во: %d | Стоимость: %.2f",
-                name, price, quantity, totalCost()
-        );
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

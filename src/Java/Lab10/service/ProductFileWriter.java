@@ -12,29 +12,24 @@ public class ProductFileWriter {
         this.file = new File(filename);
     }
 
-    // Полное перезаполнение файла
     public void overwriteFile(Product[] products) throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(
-                new BufferedOutputStream(new FileOutputStream(file, false)))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file, false)))) {
             for (Product p : products) {
                 oos.writeObject(p);
             }
         }
     }
 
-    // Добавление в конец файла без перезаписи
     public void appendProduct(Product product) throws IOException {
         boolean append = file.exists() && file.length() > 0;
 
-        try (ObjectOutputStream oos = append
-                ? new AppendableObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file, true)))
+        try (ObjectOutputStream oos = append ? new AppendableObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file, true)))
                 : new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file, true)))) {
 
             oos.writeObject(product);
         }
     }
 
-    // Кастомный OOS без повторной записи заголовка
     private static class AppendableObjectOutputStream extends ObjectOutputStream {
         public AppendableObjectOutputStream(OutputStream out) throws IOException {
             super(out);

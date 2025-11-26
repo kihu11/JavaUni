@@ -1,4 +1,5 @@
 package Java.Lab10;
+
 import Java.Lab10.model.Product;
 import Java.Lab10.service.ProductFileReader;
 import Java.Lab10.service.ProductFileWriter;
@@ -19,24 +20,38 @@ public class Main {
         ProductFileReader reader = new ProductFileReader(FILENAME);
 
         while (true) {
-            System.out.println("1. Первичное заполнение файла (стирает старые данные)");
-            System.out.println("2. Показать все элементы файла");
-            System.out.println("3. Добавить элемент");
-            System.out.println("4. Рассчитать общую стоимость и среднюю цену");
-            System.out.println("0. Выход");
-            System.out.print("Ваш выбор: ");
+            System.out.println(
+                    "Выберите пункт меню:\n" +
+                            "0. Выход\n" +
+                            "1. Первичное заполнение файла (стирает старые данные)\n" +
+                            "2. Показать все элементы файла\n" +
+                            "3. Добавить элемент\n" +
+                            "4. Рассчитать общую стоимость и среднюю цену\n"
+            );
 
             int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
 
                 case 1 -> {
-                    System.out.println("\nСоздание нового списка (старые данные удаляются)");
+                    System.out.println("\nСоздание нового списка (старый удаляется)");
 
                     Product[] arr = new Product[]{
                             new Product("Молоко", 70, 10),
                             new Product("Хлеб", 30, 20),
                             new Product("Сахар", 55, 15),
+                            new Product("Масло", 120, 5),
+                            new Product("Яблоки", 90, 12),
+                            new Product("Груши", 110, 8),
+                            new Product("Мука", 60, 18),
+                            new Product("Рис", 80, 14),
+                            new Product("Гречка", 95, 11),
+                            new Product("Макароны", 50, 16),
+                            new Product("Кофе", 300, 3),
+                            new Product("Чай", 150, 7),
+                            new Product("Колбаса", 250, 6),
+                            new Product("Сыр", 400, 4),
+                            new Product("Яйца", 85, 30)
                     };
 
                     writer.overwriteFile(arr);
@@ -52,7 +67,7 @@ public class Main {
                 }
 
                 case 3 -> {
-                    System.out.println("Введите наименование:");
+                    System.out.println("Введите название:");
                     String name = scanner.nextLine();
 
                     System.out.println("Введите цену:");
@@ -62,7 +77,6 @@ public class Main {
                     int qty = Integer.parseInt(scanner.nextLine());
 
                     writer.appendProduct(new Product(name, price, qty));
-                    System.out.println("Товар добавлен!");
                 }
 
                 case 4 -> {
@@ -83,7 +97,6 @@ public class Main {
                 }
 
                 case 0 -> {
-                    System.out.println("До свидания!");
                     return;
                 }
 
