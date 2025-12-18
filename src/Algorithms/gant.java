@@ -48,6 +48,29 @@ public class gant {
         a.values().stream().filter(x -> x.slack == 0)
                 .forEach(x -> System.out.print(x.id + " "));
         System.out.println("\n");
+        printGantt(a);
+    }
+
+    static void printGantt(Map<String, Activity> a) {
+
+        System.out.println("\nGANTT CHART:");
+
+        List<Activity> list = new ArrayList<>(a.values());
+        list.sort(Comparator.comparingInt(x -> x.ES));
+
+        for (Activity x : list) {
+            System.out.printf("%-3s |", x.id);
+
+            for (int i = 0; i < x.ES; i++) {
+                System.out.print(" ");
+            }
+
+            for (int i = 0; i < x.duration; i++) {
+                System.out.print("█");
+            }
+
+            System.out.println("  (" + x.ES + "–" + x.EF + ")");
+        }
     }
 
     public static void main(String[] args) {
