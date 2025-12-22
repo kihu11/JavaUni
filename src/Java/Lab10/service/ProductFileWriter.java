@@ -12,7 +12,7 @@ public class ProductFileWriter {
         this.file = new File(filename);
     }
 
-    public void overwriteFile(Product[] products) throws IOException {
+        public void overwriteFile(Product[] products) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file, false)))) {
             for (Product p : products) {
                 oos.writeObject(p);
@@ -35,6 +35,6 @@ public class ProductFileWriter {
             super(out);
         }
         @Override
-        protected void writeStreamHeader() { /* пусто, чтобы не портить файл */ }
+        protected void writeStreamHeader() {}
     }
 }

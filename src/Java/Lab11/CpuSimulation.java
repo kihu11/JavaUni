@@ -1,32 +1,36 @@
 package Java.Lab11;
 
-import java.util.*;
 import java.text.DecimalFormat;
+import java.util.PriorityQueue;
 
 public class CpuSimulation {
-    final int totalToGenerate;
-    final double interLower, interUpper;
-    final double s1Lower, s1Upper;
-    final double s2Lower, s2Upper;
+    final int total1, total2;
+    final double inter1Low, inter1High, inter2Low, inter2High;
+    final double s1Low, s1High, s2Low, s2High;
 
     PriorityQueue<Event> eventList = new PriorityQueue<>();
-    CpuQueue queue = new CpuQueue();
+    CpuQueue queue1 = new CpuQueue();
+    CpuQueue queue2 = new CpuQueue();
     Cpu cpu1 = new Cpu("CPU1");
     Cpu cpu2 = new Cpu("CPU2");
 
     double now = 0.0;
-    int generatedCount = 0;
-    int completedCount = 0;
-    int maxQueue = 0;
+    int gen1 = 0, gen2 = 0;
+    int completed1 = 0, completed2 = 0;
+    int maxQueue1 = 0, maxQueue2 = 0;
 
-    public CpuSimulation(int total, double il, double iu, double s1l, double s1u, double s2l, double s2u) {
-        totalToGenerate = total;
-        interLower = il;
-        interUpper = iu;
-        s1Lower = s1l;
-        s1Upper = s1u;
-        s2Lower = s2l;
-        s2Upper = s2u;
+    public CpuSimulation(int total1, int total2, double il1, double iu1, double s1l, double s1u,
+                         double il2, double iu2, double s2l, double s2u) {
+        this.total1 = total1;
+        this.total2 = total2;
+        inter1Low = il1;
+        inter1High = iu1;
+        s1Low = s1l;
+        s1High = s1u;
+        inter2Low = il2;
+        inter2High = iu2;
+        s2Low = s2l;
+        s2High = s2u;
     }
 
     void log(String s) {
@@ -41,10 +45,8 @@ public class CpuSimulation {
         return new DecimalFormat("#0.000").format(t);
     }
 
-    CpuProcess makeProcess(int id, double arr) {
-        return new CpuProcess(id, arr,
-                uniform(s1Lower, s1Upper),
-                uniform(s2Lower, s2Upper));
+    CpuProcess makeProcess(int id, double arr, double low, double high) {
+        return new CpuProcess(id, arr, uniform(low, high));
     }
 
     void schedule(Event e) {
@@ -52,14 +54,18 @@ public class CpuSimulation {
     }
 
     void updateMax() {
-        if (queue.size() > maxQueue) maxQueue = queue.size();
+        if (queue1.size() > maxQueue1) maxQueue1 = queue1.size();
+        if (queue2.size() > maxQueue2) maxQueue2 = queue2.size();
     }
 
     public void run() {
-        double t0 = uniform(interLower, interUpper);
-        CpuProcess p0 = makeProcess(++generatedCount, t0);
-        schedule(new Event(t0, EventType.ARRIVAL, p0));
-        log("Запланировано появление " + p0 + " в t=" + fmt(t0));
+        double t1 = uniform(inter1Low, inter1High);
+        CpuProcess p1 = makeProcess(++gen1, t1, s1Low, s1High);
+        schedule(new Event(t1, EventType.ARRIVAL1, p1));
+
+        double t2 = uniform(inter2Low, inter2High);
+        CpuProcess p2 = makeProcess(++gen2, t2, s2Low, s2High);
+        schedule(new Event(t2, EventType.ARRIVAL2, p2));
 
         while (!eventList.isEmpty()) {
             Event ev = eventList.poll();
@@ -67,101 +73,70 @@ public class CpuSimulation {
             updateMax();
 
             switch (ev.type) {
-                case ARRIVAL -> arrival(ev);
-                case FINISH1 -> finish1(ev);
-                case FINISH2 -> finish2(ev);
+                case ARRIVAL1 -> arrival(ev, queue1, cpu1, total1, gen1, inter1Low, inter1High, s1Low, s1High, EventType.ARRIVAL1);
+                case ARRIVAL2 -> arrival(ev, queue2, cpu2, total2, gen2, inter2Low, inter2High, s2Low, s2High, EventType.ARRIVAL2);
+                case FINISH1 -> finish(ev, cpu1, queue1, cpu2, queue2);
+                case FINISH2 -> finish(ev, cpu2, queue2, cpu1, queue1);
             }
-
-            if (completedCount >= totalToGenerate && eventList.isEmpty()) break;
         }
 
         System.out.println();
         System.out.println("Итоги");
-        System.out.println("Сгенерировано: " + generatedCount);
-        System.out.println("Завершено: " + completedCount);
-        System.out.println("Максимальная длина очереди: " + maxQueue);
+        System.out.println("Сгенерировано поток 1: " + gen1);
+        System.out.println("Сгенерировано поток 2: " + gen2);
+        System.out.println("Завершено поток 1: " + completed1);
+        System.out.println("Завершено поток 2: " + completed2);
+        System.out.println("Максимальная длина очереди 1: " + maxQueue1);
+        System.out.println("Максимальная длина очереди 2: " + maxQueue2);
     }
 
-    void arrival(Event ev) {
+    void arrival(Event ev, CpuQueue q, Cpu cpu, int total, int gen, double il, double iu, double sl, double su, EventType type) {
         CpuProcess p = ev.process;
         log("Появление " + p);
-        queue.enqueue(p);
-        log("Добавлен в очередь: " + queue);
+        q.enqueue(p);
+        log("Добавлен в очередь: " + q);
         updateMax();
 
-        if (generatedCount < totalToGenerate) {
-            double nextT = now + uniform(interLower, interUpper);
-            CpuProcess nx = makeProcess(++generatedCount, nextT);
-            schedule(new Event(nextT, EventType.ARRIVAL, nx));
+        if (gen < total) {
+            double nextT = now + uniform(il, iu);
+            CpuProcess nx = makeProcess(++gen, nextT, sl, su);
+            schedule(new Event(nextT, type, nx));
+            if (type == EventType.ARRIVAL1) this.gen1 = gen; else this.gen2 = gen;
             log("Запланировано появление " + nx + " в t=" + fmt(nextT));
         }
 
-        if (!cpu1.busy && cpu1.blockedProcess == null && !queue.isEmpty()) {
-            CpuProcess x = queue.dequeue();
-            x.start1 = now;
-            cpu1.busy = true;
-            log(x + " начинает обработку на CPU1");
-            schedule(new Event(now + x.service1, EventType.FINISH1, x));
-        } else {
-            if (cpu1.blockedProcess != null) log("CPU1 блокирован, " + p + " остаётся в очереди");
-            else if (cpu1.busy) log("CPU1 занят, " + p + " остаётся в очереди");
+        if (!cpu.busy && !q.isEmpty()) {
+            CpuProcess x = q.dequeue();
+            x.start = now;
+            cpu.busy = true;
+            cpu.currentProcess = x;
+            log(x + " начинает обработку на " + cpu.name);
+            schedule(new Event(now + x.service, cpu == cpu1 ? EventType.FINISH1 : EventType.FINISH2, x));
         }
     }
 
-    void finish1(Event ev) {
+    void finish(Event ev, Cpu cpu, CpuQueue ownQueue, Cpu otherCpu, CpuQueue otherQueue) {
         CpuProcess p = ev.process;
-        p.finish1 = now;
-        log(p + " завершил обработку на CPU1");
+        p.finish = now;
+        if (cpu == cpu1) completed1++; else completed2++;
+        log(p + " завершён на " + cpu.name);
+        cpu.busy = false;
+        cpu.currentProcess = null;
 
-        if (!cpu2.busy) {
-            p.start2 = now;
-            cpu2.busy = true;
-            schedule(new Event(now + p.service2, EventType.FINISH2, p));
-            log(p + " передан на CPU2");
-
-            cpu1.busy = false;
-            if (!queue.isEmpty()) {
-                CpuProcess x = queue.dequeue();
-                x.start1 = now;
-                cpu1.busy = true;
-                schedule(new Event(now + x.service1, EventType.FINISH1, x));
-                log("CPU1 берёт " + x + " из очереди");
-            } else log("Очередь пуста, CPU1 свободен");
-
-        } else {
-            cpu1.blockedProcess = p;
-            cpu1.busy = true;
-            log("CPU2 занят, CPU1 удерживает " + p);
-        }
-    }
-
-    void finish2(Event ev) {
-        CpuProcess p = ev.process;
-        p.finish2 = now;
-        completedCount++;
-        log(p + " завершён полностью");
-
-        cpu2.busy = false;
-
-        if (cpu1.blockedProcess != null) {
-            CpuProcess h = cpu1.blockedProcess;
-            cpu1.blockedProcess = null;
-            h.start2 = now;
-            cpu2.busy = true;
-            schedule(new Event(now + h.service2, EventType.FINISH2, h));
-            log("CPU1 передаёт удерживаемый " + h + " на CPU2");
-
-            cpu1.busy = false;
-            if (!queue.isEmpty()) {
-                CpuProcess x = queue.dequeue();
-                x.start1 = now;
-                cpu1.busy = true;
-                schedule(new Event(now + x.service1, EventType.FINISH1, x));
-                log("CPU1 берёт " + x + " после передачи удерживаемого");
-            } else log("Очередь пуста, CPU1 свободен");
-
-        } else {
-            log("CPU2 свободен, удерживаемых процессов нет");
+        if (!ownQueue.isEmpty()) {
+            CpuProcess x = ownQueue.dequeue();
+            x.start = now;
+            cpu.busy = true;
+            cpu.currentProcess = x;
+            log(x + " берётся из своей очереди на " + cpu.name);
+            schedule(new Event(now + x.service, cpu == cpu1 ? EventType.FINISH1 : EventType.FINISH2, x));
+        } else if (!otherQueue.isEmpty()) {
+            CpuProcess x = otherQueue.dequeue();
+            x.start = now;
+            cpu.busy = true;
+            cpu.currentProcess = x;
+            log(x + " берётся из чужой очереди на " + cpu.name);
+            schedule(new Event(now + x.service, cpu == cpu1 ? EventType.FINISH1 : EventType.FINISH2, x));
         }
     }
 }

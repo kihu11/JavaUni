@@ -61,9 +61,7 @@ public class Main {
                 case 2 -> {
                     System.out.println("\nСписок товаров:");
 
-                    reader.readAll(p ->
-                            System.out.println(p)
-                    );
+                    reader.readAll(p -> System.out.println(p));
                 }
 
                 case 3 -> {
@@ -81,7 +79,6 @@ public class Main {
 
                 case 4 -> {
                     List<Product> list = new ArrayList<>();
-
                     reader.readAll(list::add);
 
                     if (list.isEmpty()) {
@@ -89,19 +86,26 @@ public class Main {
                         break;
                     }
 
-                    double total = list.stream().mapToDouble(Product::totalCost).sum();
-                    double avg = list.stream().mapToDouble(Product::getPrice).average().orElse(0);
+                    double total = 0;
+                    double sumPrice = 0;
+                    for (Product p : list) {
+                        total += p.totalCost();
+                        sumPrice += p.getPrice();
+                    }
+                    double avg = sumPrice / list.size();
 
                     System.out.printf("Общая стоимость всего товара: %.2f%n", total);
                     System.out.printf("Средняя цена единицы товара: %.2f%n", avg);
                 }
 
+
                 case 0 -> {
                     return;
                 }
 
-                default -> System.out.println("Неверный выбор!");
+                default -> System.out.println("Неверный выбор");
             }
         }
     }
 }
+//19

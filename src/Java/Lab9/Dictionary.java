@@ -6,34 +6,29 @@ public class Dictionary {
 
     public void showCities(List<Call> calls) {
 
-        // карта: код города → {название, сумма}
-        Map<String, CityInfo> cityMap = new LinkedHashMap<>();
+        Map<String, Double> cityMap = new HashMap<>();
 
         for (Call call : calls) {
-            String code = call.getCityCode();
-            String city = call.getCityName();
+            String key = call.getCityCode() + " " + call.getCityName();
             double value = call.getValue();
 
-            cityMap.putIfAbsent(code, new CityInfo(city, 0));
-            cityMap.get(code).total += value;
+            cityMap.put(key, cityMap.getOrDefault(key, 0.0) + value);
         }
 
         int i = 1;
-        for (Map.Entry<String, CityInfo> entry : cityMap.entrySet()) {
-            String code = entry.getKey();
-            CityInfo info = entry.getValue();
-            System.out.printf("%d. %s — %s | Всего: %.2f руб.%n",
-                    i++, code, info.name, info.total);
+        for (Map.Entry<String, Double> entry : cityMap.entrySet()) {
+            System.out.printf("%d. %s | Всего: %.2f руб.%n", i++, entry.getKey(), entry.getValue());
         }
     }
+
 
     private static class CityInfo {
         String name;
         double total;
 
         CityInfo(String name, double total) {
-            this.name = name;
             this.total = total;
+            this.name = name;
         }
     }
 }
