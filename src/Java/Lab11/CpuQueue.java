@@ -1,36 +1,31 @@
 package Java.Lab11;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class CpuQueue {
-    private final LinkedList<CpuProcess> q = new LinkedList<>();
+    private final LinkedList<CpuProcess> queue = new LinkedList<>();
+    private int maxSize = 0;
 
-    public void enqueue(CpuProcess p) {
-        q.addLast(p);
-    }
-
-    public CpuProcess dequeue() {
-        return q.pollFirst();
-    }
-
-    public int size() {
-        return q.size();
-    }
-
-    public boolean isEmpty() {
-        return q.isEmpty();
-    }
-
-    public String toString() {
-        if (q.isEmpty()) return "[]";
-        StringBuilder sb = new StringBuilder("[");
-        Iterator<CpuProcess> it = q.iterator();
-        while (it.hasNext()) {
-            sb.append(it.next());
-            if (it.hasNext()) sb.append(", ");
+    public synchronized void enqueue(CpuProcess p) {
+        queue.addLast(p);
+        if (queue.size() > maxSize) {
+            maxSize = queue.size();
         }
-        sb.append("]");
-        return sb.toString();
+        notifyAll();
+    }
+
+    public synchronized CpuProcess dequeue() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait();
+        }
+        return queue.pollFirst();
+    }
+
+    public synchronized boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
+    public int getMaxSize() {
+        return maxSize;
     }
 }
